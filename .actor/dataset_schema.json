@@ -1,0 +1,98 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Title of the car listing"
+      },
+      "price": {
+        "type": "string",
+        "description": "Price of the car"
+      },
+      "location": {
+        "type": "string",
+        "description": "Location where the car is located"
+      },
+      "description": {
+        "type": "string",
+        "description": "Description of the car"
+      },
+      "imageUrl": {
+        "type": "string",
+        "description": "URL of the main image"
+      },
+      "url": {
+        "type": "string",
+        "description": "URL to the listing page"
+      },
+      "datePosted": {
+        "type": "string",
+        "description": "Date when the listing was posted"
+      },
+      "mileage": {
+        "type": "string",
+        "description": "Mileage of the car"
+      },
+      "year": {
+        "type": "string",
+        "description": "Year of manufacture"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Car Listings Overview",
+      "transformation": {
+        "fields": [
+          "imageUrl",
+          "title",
+          "price",
+          "location",
+          "year",
+          "mileage",
+          "datePosted",
+          "url"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "price": {
+            "label": "Price",
+            "format": "text"
+          },
+          "location": {
+            "label": "Location",
+            "format": "text"
+          },
+          "year": {
+            "label": "Year",
+            "format": "text"
+          },
+          "mileage": {
+            "label": "Mileage",
+            "format": "text"
+          },
+          "datePosted": {
+            "label": "Date Posted",
+            "format": "text"
+          },
+          "url": {
+            "label": "Listing URL",
+            "format": "link"
+          }
+        }
+      }
+    }
+  }
+}
