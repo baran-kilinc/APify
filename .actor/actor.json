@@ -1,0 +1,17 @@
+{
+  "actorSpecification": 1,
+  "name": "ebay-kleinanzeigen-car-scraper",
+  "title": "eBay Kleinanzeigen Car Listings Scraper",
+  "description": "Scrapes car listings from eBay Kleinanzeigen (German classifieds site) based on a provided URL. Extracts details like title, price, location, description, images, and links.",
+  "version": "1.0.0",
+  "meta": {
+    "templateId": "python-empty",
+    "model": "claude-3.5-sonnet"
+  },
+  "input": "./.actor/input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "readme": "./README.md",
+  "storages": {
+    "dataset": "./.actor/dataset_schema.json"
+  }
+}

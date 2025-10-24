@@ -1,0 +1,25 @@
+{
+  "title": "eBay Kleinanzeigen Car Scraper Input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "startUrl": {
+      "title": "Start URL",
+      "type": "string",
+      "description": "URL of the eBay Kleinanzeigen search page or category to scrape (e.g., https://www.kleinanzeigen.de/s-autos/c216)",
+      "editor": "textfield",
+      "example": "https://www.kleinanzeigen.de/s-autos/c216",
+      "prefill": "https://www.kleinanzeigen.de/s-autos/c216"
+    },
+    "maxListings": {
+      "title": "Maximum Listings",
+      "type": "integer",
+      "description": "Maximum number of car listings to scrape (0 = unlimited)",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 1000,
+      "example": 50
+    }
+  },
+  "required": ["startUrl"]
+}
