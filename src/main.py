@@ -109,16 +109,27 @@ def extract_listing_data(article: Any, base_url: str) -> dict[str, Any] | None:
     try:
         listing = {}
         
-        # Extract title
+        # Extract title and URL - try multiple selectors
         title_elem = article.find('a', class_=re.compile(r'ellipsis'))
         if not title_elem:
-            title_elem = article.find('h2')
+            # Try finding any link in h2 tag
+            h2_tag = article.find('h2')
+            if h2_tag:
+                title_elem = h2_tag.find('a')
+        if not title_elem:
+            # Try any link in the article
+            title_elem = article.find('a')
+            
         if title_elem:
             listing['title'] = title_elem.get_text(strip=True)
             
             # Extract URL from title link
             if title_elem.get('href'):
                 listing['url'] = urljoin(base_url, title_elem['href'])
+            else:
+                listing['url'] = None
+        else:
+            listing['url'] = None
         
         # Extract price
         price_elem = article.find('p', class_=re.compile(r'aditem-main--middle--price'))

@@ -1,72 +1,144 @@
-## Python empty template
+# eBay Kleinanzeigen Car Listings Scraper
 
-<!-- This is an Apify template readme -->
+This Apify Actor scrapes car listings from eBay Kleinanzeigen (German classifieds website). It extracts detailed information about cars including title, price, location, mileage, year, images, and more.
 
-Start a new [web scraping](https://apify.com/web-scraping) project quickly and easily in Python with our empty project template. It provides a basic structure for the [Actor](https://apify.com/actors) with [Apify SDK](https://docs.apify.com/sdk/python/) and allows you to easily add your own functionality.
+## Features
 
-## Included features
+- **Scrapes car listings** from eBay Kleinanzeigen category or search pages
+- **Pagination support** - automatically follows pagination to scrape multiple pages
+- **Configurable limit** - set the maximum number of listings to scrape
+- **Structured output** - data is stored in a clean, structured format
+- **Robust parsing** - handles various HTML structures and missing data gracefully
 
-- **[Apify SDK](https://docs.apify.com/sdk/python/)** for Python - a toolkit for building Apify [Actors](https://apify.com/actors) and scrapers in Python
-- **[Input schema](https://docs.apify.com/platform/actors/development/input-schema)** - define and easily validate a schema for your Actor's input
-- **[Request queue](https://docs.apify.com/sdk/python/docs/concepts/storages#working-with-request-queues)** - queues into which you can put the URLs you want to scrape
-- **[Dataset](https://docs.apify.com/sdk/python/docs/concepts/storages#working-with-datasets)** - store structured data where each object stored has the same attributes
+## Input Parameters
+
+- **startUrl** (required): The URL of the eBay Kleinanzeigen page to scrape
+  - Example: `https://www.kleinanzeigen.de/s-autos/c216`
+  - Can be a category page or a search results page
+
+- **maxListings** (optional): Maximum number of car listings to scrape
+  - Default: 50
+  - Set to 0 for unlimited listings
+  - Range: 0-1000
+
+## Output
+
+The Actor extracts the following fields for each car listing:
+
+- **title**: Title of the car listing
+- **price**: Price of the car
+- **location**: Location where the car is located
+- **description**: Description of the car
+- **imageUrl**: URL of the main image
+- **url**: Direct link to the listing page
+- **datePosted**: Date when the listing was posted
+- **mileage**: Mileage of the car (if available)
+- **year**: Year of manufacture (if available)
+
+## Example Input
+
+```json
+{
+  "startUrl": "https://www.kleinanzeigen.de/s-autos/c216",
+  "maxListings": 50
+}
+```
+
+## Example Output
+
+```json
+{
+  "title": "VW Golf 7 TDI",
+  "price": "12.500 €",
+  "location": "Berlin",
+  "description": "Gut erhaltener VW Golf 7 TDI, Baujahr 2015",
+  "imageUrl": "https://example.com/image.jpg",
+  "url": "https://www.kleinanzeigen.de/s-anzeige/vw-golf-tdi-2015/123456789",
+  "datePosted": "Heute, 10:30",
+  "mileage": "150.000 km",
+  "year": "2015"
+}
+```
 
 ## How it works
 
-Insert your own code to `async with Actor:` block. You can use the [Apify SDK](https://docs.apify.com/sdk/python/) with any other Python library.
+The Actor uses BeautifulSoup and httpx to scrape the eBay Kleinanzeigen website. It:
+
+1. Fetches the starting URL
+2. Parses the HTML to extract car listings
+3. Extracts relevant data from each listing
+4. Follows pagination links to scrape multiple pages
+5. Stops when the maximum number of listings is reached or no more pages are available
+6. Stores all data in the Apify dataset
+
+## Local Development
+
+### Prerequisites
+
+- Python 3.9 or higher
+- pip package manager
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd APify
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Create input file for local testing:
+   ```bash
+   mkdir -p storage/key_value_stores/default
+   ```
+
+4. Create `storage/key_value_stores/default/INPUT.json` with your test input:
+   ```json
+   {
+     "startUrl": "https://www.kleinanzeigen.de/s-autos/c216",
+     "maxListings": 5
+   }
+   ```
+
+5. Run the Actor locally:
+   ```bash
+   python3 -m src
+   ```
+
+### Running Tests
+
+Run the unit tests to verify the parsing logic:
+
+```bash
+python3 test_scraper.py
+```
+
+### Deployment
+
+To deploy the Actor to Apify platform:
+
+1. Install Apify CLI:
+   ```bash
+   npm -g install apify-cli
+   ```
+
+2. Login to Apify:
+   ```bash
+   apify login
+   ```
+
+3. Deploy the Actor:
+   ```bash
+   apify push
+   ```
 
 ## Resources
 
-- [Python tutorials in Academy](https://docs.apify.com/academy/python)
-- [Video guide on getting data using Apify API](https://www.youtube.com/watch?v=ViYYDHSBAKM)
-- [Integration with Make, GitHub, Zapier, Google Drive, and other apps](https://apify.com/integrations)
-- A short guide on how to build web scrapers using code templates:
-
-[web scraper template](https://www.youtube.com/watch?v=u-i-Korzf8w)
-
-
-## Getting started
-
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-at-apify-console). In short, you will:
-
-1. Build the Actor
-2. Run the Actor
-
-## Pull the Actor for local development
-
-If you would like to develop locally, you can pull the existing Actor from Apify console using Apify CLI:
-
-1. Install `apify-cli`
-
-    **Using Homebrew**
-
-    ```bash
-    brew install apify-cli
-    ```
-
-    **Using NPM**
-
-    ```bash
-    npm -g install apify-cli
-    ```
-
-2. Pull the Actor by its unique `<ActorId>`, which is one of the following:
-    - unique name of the Actor to pull (e.g. "apify/hello-world")
-    - or ID of the Actor to pull (e.g. "E2jjCZBezvAZnX8Rb")
-
-    You can find both by clicking on the Actor title at the top of the page, which will open a modal containing both Actor unique name and Actor ID.
-
-    This command will copy the Actor into the current directory on your local machine.
-
-    ```bash
-    apify pull <ActorId>
-    ```
-
-## Documentation reference
-
-To learn more about Apify and Actors, take a look at the following resources:
-
-- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
 - [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
 - [Apify Platform documentation](https://docs.apify.com/platform)
+- [Python tutorials in Academy](https://docs.apify.com/academy/python)
 - [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)
