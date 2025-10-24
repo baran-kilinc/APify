@@ -127,9 +127,9 @@ def extract_listing_data(article: Any, base_url: str) -> dict[str, Any] | None:
             if title_elem.get('href'):
                 listing['url'] = urljoin(base_url, title_elem['href'])
             else:
-                listing['url'] = None
+                listing['url'] = ''
         else:
-            listing['url'] = None
+            listing['url'] = ''
         
         # Extract price
         price_elem = article.find('p', class_=re.compile(r'aditem-main--middle--price'))
